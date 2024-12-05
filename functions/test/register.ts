@@ -31,7 +31,9 @@ const url = `https://discord.com/api/v10/applications/${applicationId}/guilds/${
       Authorization: `Bot ${token}`,
     },
     method: 'PUT',
-    body: JSON.stringify(Object.values(commands)),
+    body: JSON.stringify(Object.values(
+      await commands.loadCommands()
+    )),
   });
 
   if (response.ok) {

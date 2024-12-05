@@ -30,11 +30,14 @@ export default {
         // We should prolly cache api calls to avoid rate limiting
         const ratings = (await Promise.all(users.map(async user => {
             const solo = await aoe4world.getSoloLeaderboard(user.profileId);
+            if (!solo) {
+                return;
+            }
             return {
                 userId: user.userId,
                 ...solo
             }
-        }))).filter(user => user.rating);
+        }))).filter(rating => rating != undefined);
         
         const leaderboard = (await Promise.all(ratings.map(async user => {
             const discordUser = await api.users.get(user.userId);

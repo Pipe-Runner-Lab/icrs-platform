@@ -29,12 +29,6 @@ export default {
                 content: "Could not find user",
             }
         }
-        const snapshot = await db.collection("registered").doc(userId).get();
-        if (snapshot.exists) {
-            return {
-                content: "User already registered",
-            }
-        }
 
         const profileId = await aoe4world.getProfileId(username);
         if (!profileId) {

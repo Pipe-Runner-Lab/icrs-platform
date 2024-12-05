@@ -7,7 +7,7 @@ async function apiCall(endpoint: string, queryParams: Record<string, any> = {}) 
     return await response.json();
 }
 
-export async function getProfileId(username: string): Promise<number|undefined> {
+export async function getProfileId(username: string): Promise<number|void> {
     const data = await apiCall("players/search", {
         query: username,
         exact: true
@@ -22,10 +22,13 @@ export async function getProfileId(username: string): Promise<number|undefined> 
 export async function getSoloLeaderboard(profileId: number): Promise<{
     rating: number,
     name: string
-}> {
+}|void> {
     const data =  await apiCall("leaderboards/rm_solo", {
         profile_id: profileId
     });
+    if (data.players.length == 0) {
+        return;
+    }
     return {
         rating: data.players[0].rating,
         name: data.players[0].name,
