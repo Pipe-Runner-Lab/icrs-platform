@@ -2,11 +2,21 @@
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strict": true,
+    // "strict": true,
     "target": "es2017",
+    "removeComments": true,
+    "incremental": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "compileOnSave": true,
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["./tests/", "./node_modules/", "./dist/"]
 }

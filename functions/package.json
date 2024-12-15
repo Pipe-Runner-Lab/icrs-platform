@@ -4,11 +4,13 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "npm run build && firebase emulators:start --inspect-functions --only functions,firestore",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "register": "npx tsx --env-file=.env tools/register-commands.ts",
+    "tunnel": "npx ngrok http 5001"
   },
   "engines": {
     "node": "18"
@@ -19,16 +21,19 @@
     "discord-api-types": "^0.37.110",
     "discord-interactions": "^4.1.0",
     "firebase-admin": "^12.6.0",
-    "firebase-functions": "^6.0.1"
+    "firebase-functions": "^6.1.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.57.1",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.4",
     "firebase-functions-test": "^3.1.0",
+    "prettier": "^3.4.2",
+    "prettier-eslint": "^16.3.0",
     "typescript": "^4.9.0"
   },
   "private": true
