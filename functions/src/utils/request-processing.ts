@@ -30,3 +30,6 @@ export async function verifyRequest(
   }
   return true;
 }
+
+export const doesGuildMatch = (guildId: string): boolean =>
+  guildId === process.env.ICRS_GUILD_ID;

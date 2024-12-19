@@ -1,10 +1,12 @@
-import { onRequest } from "firebase-functions/v2/https";
 import { initializeApp } from "firebase-admin/app";
-import { InteractionType } from "discord-interactions";
-import { verifyRequest } from "./utils/request-processing";
-import { handleCommand } from "./commands";
 
 initializeApp();
+
+import { onRequest } from "firebase-functions/v2/https";
+import { InteractionType } from "discord-interactions";
+import { verifyRequest } from "./utils/request-processing";
+
+import { handleCommand } from "./commands";
 
 export const interactions = onRequest(async (request, response) => {
   const isValid = await verifyRequest(request, response);

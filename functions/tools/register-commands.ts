@@ -45,7 +45,10 @@ async function registerCommands(url) {
       Authorization: `Bot ${token}`
     },
     method: "PUT",
-    body: JSON.stringify(Object.values(commands))
+    body: JSON.stringify(
+      // in order to filter our "default"
+      Object.values(commands).filter((command) => command.name)
+    )
   });
 
   if (response.ok) {
@@ -57,5 +60,7 @@ async function registerCommands(url) {
   }
   return response;
 }
+
+// TODO Delete commands
 
 await registerGlobalCommands();

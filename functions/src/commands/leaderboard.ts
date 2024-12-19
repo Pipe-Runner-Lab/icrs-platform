@@ -1,31 +1,19 @@
 import type { AppCommand } from "../utils/types";
 import * as aoe4world from "../utils/aoe4world";
+import { LEADERBOARD } from "../constants/command-list";
 
 export default {
-  name: "leaderboard",
-  description: "Get the leaderboard",
-  options: [
-    {
-      type: 1,
-      name: "global",
-      description: "Global leaderboard"
-    },
-    {
-      type: 1,
-      name: "online",
-      description: "Guild leaderboard"
-    }
-  ],
+  ...LEADERBOARD,
   callback: async ({ interaction, db, api }) => {
-    const subcommand = interaction.data.options[0]?.name;
-    if (subcommand == "online") {
+    const subcommand = interaction?.data?.options?.[0]?.name;
+    if (subcommand === "online") {
       return {
         content: "Online Leaderboard"
       };
     }
 
-    const reqistered = await db.collection("registered").get();
-    const users = reqistered.docs.map((doc) => doc.data());
+    const registered = await db.collection("registered").get();
+    const users = registered.docs.map((doc) => doc.data());
 
     // We should prolly cache api calls to avoid rate limiting
     const ratings = (
@@ -45,18 +33,24 @@ export default {
 
     const leaderboard = (
       await Promise.all(
-        ratings.map(async (user) => {
-          const discordUser = await api.users.get(user.userId);
-          return {
-            ...user,
-            username: discordUser?.username
-          };
-        })
+        ratings
+          .filter((user) => !!user)
+          .map(async (user) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const discordUser = await api.users.get(user!.userId);
+            return {
+              ...user,
+              username: discordUser?.username
+            };
+          })
       )
     )
       .filter((user) => user.username)
       .slice(0, 20)
-      .sort((a, b) => b.rating - a.rating);
+      .sort((a, b) => {
+        if (!a?.rating || !b?.rating) return 0;
+        return b.rating - a.rating;
+      });
 
     return {
       embeds: [

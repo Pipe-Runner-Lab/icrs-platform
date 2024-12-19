@@ -9,7 +9,8 @@ import { readdir } from "fs/promises";
 
 const db = getFirestore();
 
-const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN!);
 const api = new API(rest);
 let commandsMap: Record<string, AppCommand> = {};
 loadCommands().then((commands) => {
