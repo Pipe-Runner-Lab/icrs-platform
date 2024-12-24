@@ -82,11 +82,12 @@ export default {
       };
     }
 
-    const existingIds = (userDoc.exists ? userDoc.data()?.[game] : []) ?? [];
+    const existingIds = (userDoc.exists ? userDoc.data()?.[game] : {}) ?? {};
 
-    if (existingIds.includes(id)) {
+    if (id in existingIds) {
+      delete existingIds[id];
       await userCollection.doc(`${discordUserId}`).update({
-        [game]: existingIds.filter((existingId: string) => existingId !== id)
+        [game]: existingIds
       });
 
       return {

@@ -5,6 +5,8 @@ import { doesGuildMatch } from "../utils/request-processing";
 import { GAMES } from "../constants/games";
 // TODO: @ path resolution is not working when build completes
 
+// https://interactions-zhgogk6p4a-uc.a.run.app
+
 const MAX_IDS = 5;
 
 export default {
@@ -37,12 +39,12 @@ export default {
       };
     }
 
-    let existingIds = [];
+    let existingIds = {};
     const userCollection = db.collection("users");
     if ((await userCollection.get()).size !== 0) {
       const userDoc = await userCollection.doc(`${discordUserId}`).get();
-      existingIds = userDoc.exists ? userDoc.data()?.[game] : [];
-      if (existingIds?.length >= MAX_IDS) {
+      existingIds = userDoc.exists ? userDoc.data()?.[game] : {};
+      if (Object.keys(existingIds).length >= MAX_IDS) {
         return {
           content: "You have reached the maximum number of IDs for this game"
         };
@@ -59,13 +61,22 @@ export default {
         content: "Could not find player with the provided ID"
       };
     }
+    const playerRating = await aoe4world.getSoloLeaderboard(player.profile_id);
+    if (!playerRating) {
+      return {
+        content: "Could not find rating for the player"
+      };
+    }
 
     await db
       .collection("users")
       .doc(discordUserId)
       .set(
         {
-          [game]: [...(existingIds ?? []), id]
+          [game]: {
+            ...existingIds,
+            [player.profile_id]: playerRating
+          }
         },
         {
           merge: true
