@@ -63,11 +63,19 @@ export async function scheduledCallback() {
     id: doc.id,
     ...doc.data()
   })) as any[];
-  
+
+  const allProfileIds = users.reduce((acc, user) => {
+    for (const profileId of Object.keys(user[GAMES.AOE4])) {
+      acc.push(profileId);
+    }
+    return acc;
+  }, []) as string[];
+
+  const leaderboard = await aoe4world.getSoloLeaderboard(allProfileIds.map(Number));
   for (const user of users){
-    const profileData = {} as Record<string, Exclude<Awaited<ReturnType<typeof aoe4world.getSoloLeaderboard>>, void>>;
+    const profileData = {} as Awaited<ReturnType<typeof aoe4world.getSoloLeaderboard>>;
     for (const profileId of Object.keys(user[GAMES.AOE4])){
-      const profile = await aoe4world.getSoloLeaderboard(Number(profileId));
+      const profile = leaderboard[profileId];
       if (!profile) continue;
       profileData[profileId] = profile;
     }

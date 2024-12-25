@@ -61,7 +61,7 @@ export default {
         content: "Could not find player with the provided ID"
       };
     }
-    const playerRating = await aoe4world.getSoloLeaderboard(player.profile_id);
+    const playerRating = (await aoe4world.getSoloLeaderboard([player.profile_id]))[player.profile_id];
     if (!playerRating) {
       return {
         content: "Could not find rating for the player"
