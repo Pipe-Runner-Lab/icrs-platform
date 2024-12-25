@@ -27,7 +27,7 @@ export default {
         };
       }
       return acc;
-    }, {}) as { userId: string; rating: number; name: string }[];
+    }, {}) as Record<string,{ userId: string; rating: number; name: string }>;
 
     const leaderboard = Object.values(reducedUsers).sort((a, b) => {
       if (!a?.rating || !b?.rating) return 0;

@@ -41,18 +41,32 @@ export async function getProfileId(username: string): Promise<number | void> {
   return data.players[0].profile_id;
 }
 
-export async function getSoloLeaderboard(profileId: number): Promise<{
+export async function getSoloLeaderboard(profileIds: number[]): Promise<Record<string, {
   rating: number;
   name: string;
-} | void> {
-  const data = await apiCall("leaderboards/rm_solo", {
-    profile_id: profileId
-  });
-  if (data.players.length == 0) {
-    return;
+}>> {
+  const result = {} as Record<string, {
+    rating: number;
+    name: string;
+  }>;
+  
+  const chunks = [];
+  for (let i = 0; i < profileIds.length; i += 50) {
+    chunks.push(profileIds.slice(i, i + 50));
   }
-  return {
-    rating: data.players[0].rating,
-    name: data.players[0].name
-  };
+
+  for (const chunk of chunks) {
+    const data = await apiCall("leaderboards/rm_solo", {
+      profile_id: chunk.join(",")
+    });
+
+    for (const player of data.players) {
+      result[player.profile_id] = {
+        rating: player.rating,
+        name: player.name
+      };
+    }
+  }
+
+  return result;
 }
