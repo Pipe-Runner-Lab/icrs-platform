@@ -4,7 +4,7 @@ import type {
   APIChatInputApplicationCommandInteraction,
   APIChatInputApplicationCommandInteractionData,
   APIApplicationCommandInteractionDataBasicOption
-} from "discord-api-types/v10";
+} from "@discordjs/core";
 import type { Firestore } from "firebase-admin/firestore";
 import type { API } from "@discordjs/core";
 

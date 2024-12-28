@@ -6,6 +6,8 @@ import { getFirestore } from "firebase-admin/firestore";
 import { InteractionResponseType } from "discord-interactions";
 import type { AppCommand } from "@/utils/types";
 import { readdir } from "fs/promises";
+import { GAMES } from "../constants/games";
+import * as aoe4world from "../utils/aoe4world";
 
 const db = getFirestore();
 
@@ -55,3 +57,33 @@ export async function loadCommands() {
   }
   return commandsMap;
 }
+
+export async function scheduledCallback() {
+  const users = (await db.collection("users").get()).docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  })) as any[];
+
+  const allProfileIds = users.reduce((acc, user) => {
+    for (const profileId of Object.keys(user[GAMES.AOE4])) {
+      acc.push(profileId);
+    }
+    return acc;
+  }, []) as string[];
+
+  const leaderboard = await aoe4world.getSoloLeaderboard(allProfileIds.map(Number));
+  for (const user of users){
+    const profileData = {} as Awaited<ReturnType<typeof aoe4world.getSoloLeaderboard>>;
+    for (const profileId of Object.keys(user[GAMES.AOE4])){
+      const profile = leaderboard[profileId];
+      if (!profile) continue;
+      profileData[profileId] = profile;
+    }
+    await db.collection("users").doc(user.id).set({
+      [GAMES.AOE4]: profileData
+    }, { merge: true });
+  }
+}
+
+// was unable to run scheduledCallback locally, so just a local development workaround
+// setInterval(scheduledCallback, 60000);

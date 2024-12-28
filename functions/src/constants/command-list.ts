@@ -1,6 +1,5 @@
 import { PartialAPIApplicationCommand } from "@/utils/types";
-import { ApplicationCommandType } from "@discordjs/core";
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import { ApplicationCommandType, ApplicationCommandOptionType } from "@discordjs/core";
 import { GAMES } from "./games";
 
 // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
@@ -101,13 +100,13 @@ export const LEADERBOARD = {
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: "global",
-      description: "Global leaderboard"
+      name: "online",
+      description: "Online leaderboard"
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: "online",
-      description: "Guild leaderboard"
+      name: "local",
+      description: "Local leaderboard"
     }
   ]
 } satisfies PartialAPIApplicationCommand;
