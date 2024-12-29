@@ -3,24 +3,23 @@ import type {
   APIInteractionResponseCallbackData,
   APIChatInputApplicationCommandInteraction,
   APIChatInputApplicationCommandInteractionData,
-  APIApplicationCommandInteractionDataBasicOption
+  APIApplicationCommandInteractionDataBasicOption,
+  API
 } from "@discordjs/core";
-import type { Firestore } from "firebase-admin/firestore";
-import type { API } from "@discordjs/core";
 
 export type PartialAPIApplicationCommand = Omit<
   APIApplicationCommand,
   "id" | "application_id" | "version" | "default_member_permissions" | "type"
 > & { type?: number };
 
-type PartialAPIApplicationCommandInteractionData = Omit<
+export type PartialAPIApplicationCommandInteractionData = Omit<
   APIChatInputApplicationCommandInteractionData,
   "options"
 > & {
   options?: APIApplicationCommandInteractionDataBasicOption[];
 };
 
-type PartialAPIChatInputApplicationCommandInteraction = Omit<
+export type PartialAPIChatInputApplicationCommandInteraction = Omit<
   APIChatInputApplicationCommandInteraction,
   "data"
 > & {
@@ -30,11 +29,9 @@ type PartialAPIChatInputApplicationCommandInteraction = Omit<
 export type AppCommand = PartialAPIApplicationCommand & {
   callback: ({
     interaction,
-    db,
     api
   }: {
     interaction: PartialAPIChatInputApplicationCommandInteraction;
-    db: Firestore;
     api: API;
   }) => Promise<APIInteractionResponseCallbackData | void>;
 };

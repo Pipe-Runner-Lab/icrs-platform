@@ -4,12 +4,10 @@ import type { Request } from "firebase-functions/v2/https";
 import type { Response } from "firebase-functions/lib/v1/cloud-functions";
 import { getFirestore } from "firebase-admin/firestore";
 import { InteractionResponseType } from "discord-interactions";
-import type { AppCommand } from "@/utils/types";
+import type { AppCommand } from "@/@types/discord-custom";
 import { readdir } from "fs/promises";
 import { GAMES } from "../constants/games";
 import * as aoe4world from "../utils/aoe4world";
-
-const db = getFirestore();
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN!);
@@ -25,19 +23,31 @@ loadCommands().then((commands) => {
  * @param {Response} response The response object
  */
 export async function handleCommand(request: Request, response: Response) {
-  const command = commandsMap[request.body.data.name];
-  const responseData = await command.callback({
-    interaction: request.body,
-    db: db,
-    api: api
-  });
-  if (!responseData) {
-    return;
+  try {
+    const command = commandsMap[request.body.data.name];
+    const responseData = await command.callback({
+      interaction: request.body,
+      api: api
+    });
+    if (!responseData) {
+      return;
+    }
+    response.json({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: responseData
+    });
+  } catch (error) {
+    response.json({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: (
+          error as {
+            message: string;
+          }
+        ).message
+      }
+    });
   }
-  response.json({
-    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    data: responseData
-  });
 }
 
 /**
@@ -58,7 +68,13 @@ export async function loadCommands() {
   return commandsMap;
 }
 
+/**
+ * Scheduled callback to update user data
+ * This function is called every 5 minutes
+ * @return {Promise<void>}
+ */
 export async function scheduledCallback() {
+  const db = getFirestore();
   const users = (await db.collection("users").get()).docs.map((doc) => ({
     id: doc.id,
     ...doc.data()
@@ -71,17 +87,27 @@ export async function scheduledCallback() {
     return acc;
   }, []) as string[];
 
-  const leaderboard = await aoe4world.getSoloLeaderboard(allProfileIds.map(Number));
-  for (const user of users){
-    const profileData = {} as Awaited<ReturnType<typeof aoe4world.getSoloLeaderboard>>;
-    for (const profileId of Object.keys(user[GAMES.AOE4])){
+  const leaderboard = await aoe4world.getSoloLeaderboard(
+    allProfileIds.map(Number)
+  );
+  for (const user of users) {
+    const profileData = {} as Awaited<
+      ReturnType<typeof aoe4world.getSoloLeaderboard>
+    >;
+    for (const profileId of Object.keys(user[GAMES.AOE4])) {
       const profile = leaderboard[profileId];
       if (!profile) continue;
       profileData[profileId] = profile;
     }
-    await db.collection("users").doc(user.id).set({
-      [GAMES.AOE4]: profileData
-    }, { merge: true });
+    await db
+      .collection("users")
+      .doc(user.id)
+      .set(
+        {
+          [GAMES.AOE4]: profileData
+        },
+        { merge: true }
+      );
   }
 }
 

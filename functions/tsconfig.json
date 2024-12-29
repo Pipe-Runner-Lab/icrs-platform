@@ -10,6 +10,7 @@
     "removeComments": true,
     "incremental": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
