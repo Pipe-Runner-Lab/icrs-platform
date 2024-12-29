@@ -1,5 +1,5 @@
 # Compiled JavaScript files
-lib
+/lib
 
 # TypeScript v1 declaration files
 typings/
@@ -10,4 +10,4 @@ node_modules/
 
 service-account.json
 
-data
+/data
