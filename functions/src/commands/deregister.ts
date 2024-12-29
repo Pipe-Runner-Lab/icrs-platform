@@ -1,28 +1,19 @@
-import type { AppCommand } from "../utils/types";
+import type { AppCommand } from "../@types/discord-custom";
 import {
   DE_REGISTER,
   DE_REGISTER_SUBCOMMANDS
 } from "../constants/command-list";
-import { doesGuildMatch } from "../utils/request-processing";
-import { GAMES } from "../constants/games";
 import { APIApplicationCommandInteractionDataSubcommandOption } from "@discordjs/core";
+import { getFirestore } from "firebase-admin/firestore";
+import { validateCredentials, validateGame } from "../lib/helpers/validator";
+import { getDiscordUserId } from "../lib/helpers/getters";
 // TODO: @ path resolution is not working when build completes
 
 export default {
   ...DE_REGISTER,
-  callback: async ({ interaction, db }) => {
-    if (!interaction.guild_id || !doesGuildMatch(interaction.guild_id)) {
-      return {
-        content: "This command is only available in the ICRS Discord server"
-      };
-    }
-
-    const discordUserId = interaction?.member?.user?.id;
-    if (!discordUserId) {
-      return {
-        content: "Could not find your user ID"
-      };
-    }
+  callback: async ({ interaction }) => {
+    validateCredentials(interaction);
+    const discordUserId = getDiscordUserId(interaction);
 
     const subcommand = interaction.data?.options?.[0]
       .name as DE_REGISTER_SUBCOMMANDS;
@@ -31,31 +22,22 @@ export default {
         ?.options?.[0] as unknown as APIApplicationCommandInteractionDataSubcommandOption
     ).options;
     if (!subcommand) {
-      return {
-        content: "Invalid subcommand"
-      };
+      throw new Error("Invalid command");
     }
 
     if (!Object.values(DE_REGISTER_SUBCOMMANDS).includes(subcommand)) {
-      return {
-        content: "Invalid subcommand"
-      };
+      throw new Error("Invalid command");
     }
 
+    const db = getFirestore();
+
     const userCollection = db.collection("users");
-    if ((await userCollection.get()).size === 0) {
-      return {
-        content: "You have not registered any profiles"
-      };
-    }
 
     /* ------------------------------- DELETE USER ------------------------------ */
     const userDoc = await userCollection.doc(`${discordUserId}`).get();
 
     if (!userDoc.exists) {
-      return {
-        content: "You have not registered any profile in our database"
-      };
+      throw new Error("You have not registered any profiles");
     }
 
     if (subcommand === DE_REGISTER_SUBCOMMANDS.user) {
@@ -68,18 +50,12 @@ export default {
     /* -------------------------------- DELETE ID ------------------------------- */
 
     const game = subcommandData?.[0].value as string;
-    if (!game || !Object.values(GAMES).includes(game as GAMES)) {
-      return {
-        content: "Please select a game we support"
-      };
-    }
+    validateGame(game);
 
     const id = subcommandData?.[1].value as string;
     // TODO: Implement a regex for ID validation
     if (!id) {
-      return {
-        content: "Please provide a valid ID"
-      };
+      throw new Error("Please provide a valid ID");
     }
 
     const existingIds = (userDoc.exists ? userDoc.data()?.[game] : {}) ?? {};
@@ -94,9 +70,7 @@ export default {
         content: `ID ${id} has been removed from your profile`
       };
     } else {
-      return {
-        content: `ID ${id} not found in your profile for ${game}`
-      };
+      throw new Error(`ID ${id} not found in your profile for ${game}`);
     }
   }
 } satisfies AppCommand;

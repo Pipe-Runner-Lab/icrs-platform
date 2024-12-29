@@ -1,23 +1,28 @@
-import type { AppCommand } from "../utils/types";
+import type { AppCommand } from "../@types/discord-custom";
 import { LEADERBOARD } from "../constants/command-list";
 import { GAMES } from "../constants/games";
 import Table from "cli-table";
 import { updateInHouseLeaderboard } from "../lib/leaderboard/update-in-house-leaderboard";
 import { showInHouseLeaderboard } from "../lib/leaderboard/show-in-house-leaderboard";
+import { getFirestore } from "firebase-admin/firestore";
+import { validateCredentials } from "../lib/helpers/validator";
 
 export default {
   ...LEADERBOARD,
-  callback: async ({ interaction, db }) => {
-    console.log(interaction);
-
+  callback: async ({ interaction }) => {
     const subcommand = interaction?.data?.options?.[0]?.name;
     if (subcommand === "in-house") {
       return showInHouseLeaderboard(interaction.data);
     }
 
     if (subcommand === "update-in-house") {
+      validateCredentials(interaction, {
+        adminLock: true
+      });
       return updateInHouseLeaderboard(interaction.data);
     }
+
+    const db = getFirestore();
 
     const registered = await db.collection("users").get();
     const users = registered.docs.map((doc) => ({

@@ -1,4 +1,4 @@
-import { PartialAPIApplicationCommand } from "@/utils/types";
+import { PartialAPIApplicationCommand } from "@/@types/discord-custom";
 import {
   ApplicationCommandType,
   ApplicationCommandOptionType,

@@ -3,11 +3,10 @@ import { initializeApp } from "firebase-admin/app";
 initializeApp();
 
 import { onRequest } from "firebase-functions/v2/https";
-import { onSchedule } from "firebase-functions/scheduler";
 import { InteractionType } from "discord-interactions";
 import { verifyRequest } from "./utils/request-processing";
 
-import { handleCommand, scheduledCallback } from "./commands";
+import { handleCommand } from "./commands";
 
 export const interactions = onRequest(
   {
@@ -26,9 +25,4 @@ export const interactions = onRequest(
       handleCommand(request, response);
     }
   }
-);
-
-export const scheduledFunction = onSchedule(
-  "every 5 minutes",
-  scheduledCallback
 );
