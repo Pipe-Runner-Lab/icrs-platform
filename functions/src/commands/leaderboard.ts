@@ -2,15 +2,21 @@ import type { AppCommand } from "../utils/types";
 import { LEADERBOARD } from "../constants/command-list";
 import { GAMES } from "../constants/games";
 import Table from "cli-table";
+import { updateInHouseLeaderboard } from "../lib/leaderboard/update-in-house-leaderboard";
+import { showInHouseLeaderboard } from "../lib/leaderboard/show-in-house-leaderboard";
 
 export default {
   ...LEADERBOARD,
   callback: async ({ interaction, db }) => {
+    console.log(interaction);
+
     const subcommand = interaction?.data?.options?.[0]?.name;
-    if (subcommand === "local") {
-      return {
-        content: "Local Leaderboard"
-      };
+    if (subcommand === "in-house") {
+      return showInHouseLeaderboard(interaction.data);
+    }
+
+    if (subcommand === "update-in-house") {
+      return updateInHouseLeaderboard(interaction.data);
     }
 
     const registered = await db.collection("users").get();
@@ -23,23 +29,30 @@ export default {
       for (const [profileId, profile] of Object.entries(user[GAMES.AOE4])) {
         acc[profileId] = {
           userId: user.id,
-          ...profile as {}
+          ...(profile as object)
         };
       }
       return acc;
-    }, {}) as Record<string,{ userId: string; rating: number; name: string }>;
+    }, {}) as Record<string, { userId: string; rating: number; name: string }>;
 
-    const leaderboard = Object.values(reducedUsers).sort((a, b) => {
-      if (!a?.rating || !b?.rating) return 0;
-      return b.rating - a.rating;
-    })
-    .slice(0, 20);
+    const leaderboard = Object.values(reducedUsers)
+      .sort((a, b) => {
+        if (!a?.rating || !b?.rating) return 0;
+        return b.rating - a.rating;
+      })
+      .slice(0, 20);
 
     const table = new Table({
-      head: ["User", "Name", "Rating"],
+      head: ["User", "Name", "Rating"]
     });
-    table.push(...leaderboard.map((user) => [`<@!${user.userId}>`, user.name, user.rating.toString()]));
-    
+    table.push(
+      ...leaderboard.map((user) => [
+        `<@!${user.userId}>`,
+        user.name,
+        user.rating.toString()
+      ])
+    );
+
     return {
       embeds: [
         {

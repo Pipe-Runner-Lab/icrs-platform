@@ -1,31 +1,46 @@
 import { PartialAPIApplicationCommand } from "@/utils/types";
-import { ApplicationCommandType, ApplicationCommandOptionType } from "@discordjs/core";
+import {
+  ApplicationCommandType,
+  ApplicationCommandOptionType,
+  APIApplicationCommandOption,
+  APIApplicationCommandBasicOption
+} from "@discordjs/core";
 import { GAMES } from "./games";
 
 // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+
+const gameChoiceCommandComponent: APIApplicationCommandOption = {
+  name: "game",
+  type: ApplicationCommandOptionType.String,
+  description: "Select the game you want to register for",
+  choices: [
+    { name: "Age Of Empires 4", value: GAMES.AOE4 },
+    { name: "Dota 2", value: GAMES.DOTA2 }
+  ],
+  required: true
+};
+
+const idCommandComponent: APIApplicationCommandOption = {
+  name: "id",
+  type: ApplicationCommandOptionType.String,
+  description: "Profile ID (Check /help if you are unsure)",
+  required: true
+};
+
+const mentionCommandComponent = (
+  name: "winner" | "loser"
+): APIApplicationCommandBasicOption => ({
+  name,
+  type: ApplicationCommandOptionType.User,
+  description: `Mention the ${name} of the match`,
+  required: true
+});
 
 export const REGISTER = {
   name: "register",
   description: "Add profile to our database",
   type: ApplicationCommandType.ChatInput,
-  options: [
-    {
-      name: "game",
-      type: ApplicationCommandOptionType.String,
-      description: "Select the game you want to register for",
-      choices: [
-        { name: "Age Of Empires 4", value: GAMES.AOE4 },
-        { name: "Dota 2", value: GAMES.DOTA2 }
-      ],
-      required: true
-    },
-    {
-      name: "id",
-      type: ApplicationCommandOptionType.String,
-      description: "Profile ID (Check /help if you are unsure)",
-      required: true
-    }
-  ]
+  options: [gameChoiceCommandComponent, idCommandComponent]
 } satisfies PartialAPIApplicationCommand;
 
 export enum DE_REGISTER_SUBCOMMANDS {
@@ -47,24 +62,7 @@ export const DE_REGISTER = {
       name: DE_REGISTER_SUBCOMMANDS.id,
       description: "Deregister a game ID from your profile",
       type: ApplicationCommandOptionType.Subcommand,
-      options: [
-        {
-          name: "game",
-          type: ApplicationCommandOptionType.String,
-          description: "Select the game you want to deregister for",
-          choices: [
-            { name: "Age Of Empires 4", value: GAMES.AOE4 },
-            { name: "Dota 2", value: GAMES.DOTA2 }
-          ],
-          required: true
-        },
-        {
-          name: "id",
-          type: ApplicationCommandOptionType.String,
-          description: "Profile ID (Check /help if you are unsure)",
-          required: true
-        }
-      ]
+      options: [gameChoiceCommandComponent, idCommandComponent]
     }
   ]
 } satisfies PartialAPIApplicationCommand;
@@ -101,12 +99,34 @@ export const LEADERBOARD = {
     {
       type: ApplicationCommandOptionType.Subcommand,
       name: "online",
-      description: "Online leaderboard"
+      description: "Show Online leaderboard",
+      options: [gameChoiceCommandComponent]
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: "local",
-      description: "Local leaderboard"
+      name: "in-house",
+      description: "Show In House leaderboard",
+      options: [gameChoiceCommandComponent]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: "update-online",
+      description: "Update Online leaderboard",
+      options: [
+        gameChoiceCommandComponent,
+        mentionCommandComponent("winner"),
+        mentionCommandComponent("loser")
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: "update-in-house",
+      description: "Update In House leaderboard",
+      options: [
+        gameChoiceCommandComponent,
+        mentionCommandComponent("winner"),
+        mentionCommandComponent("loser")
+      ]
     }
   ]
 } satisfies PartialAPIApplicationCommand;

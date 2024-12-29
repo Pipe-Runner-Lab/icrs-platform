@@ -12,6 +12,15 @@ const MAX_IDS = 5;
 export default {
   ...REGISTER,
   callback: async ({ interaction, db }) => {
+    if (
+      process.env.NODE_ENV === "production" &&
+      interaction.channel.id !== process.env.LEADERBOARD_CHANNEL_ID
+    ) {
+      return {
+        content: "This command is only available in the leaderboard channel"
+      };
+    }
+
     if (!interaction.guild_id || !doesGuildMatch(interaction.guild_id)) {
       return {
         content: "This command is only available in the ICRS Discord server"
@@ -24,6 +33,8 @@ export default {
         content: "Could not find your user ID"
       };
     }
+
+    console.log(interaction);
 
     const game = interaction.data?.options?.[0].value as string;
     if (!game || !Object.values(GAMES).includes(game as GAMES)) {
@@ -41,14 +52,12 @@ export default {
 
     let existingIds = {};
     const userCollection = db.collection("users");
-    if ((await userCollection.get()).size !== 0) {
-      const userDoc = await userCollection.doc(`${discordUserId}`).get();
-      existingIds = userDoc.exists ? userDoc.data()?.[game] : {};
-      if (Object.keys(existingIds).length >= MAX_IDS) {
-        return {
-          content: "You have reached the maximum number of IDs for this game"
-        };
-      }
+    const userDoc = await userCollection.doc(`${discordUserId}`).get();
+    existingIds = userDoc.exists ? userDoc.data()?.[game] : {};
+    if (Object.keys(existingIds).length >= MAX_IDS) {
+      return {
+        content: "You have reached the maximum number of IDs for this game"
+      };
     }
 
     let player = null;
@@ -61,7 +70,9 @@ export default {
         content: "Could not find player with the provided ID"
       };
     }
-    const playerRating = (await aoe4world.getSoloLeaderboard([player.profile_id]))[player.profile_id];
+    const playerRating = (
+      await aoe4world.getSoloLeaderboard([player.profile_id])
+    )[player.profile_id];
     if (!playerRating) {
       return {
         content: "Could not find rating for the player"
@@ -73,6 +84,11 @@ export default {
       .doc(discordUserId)
       .set(
         {
+          profile: {
+            username: interaction?.member?.user.username,
+            displayName: interaction?.member?.user.global_name,
+            nickName: interaction?.member?.nick
+          },
           [game]: {
             ...existingIds,
             [player.profile_id]: playerRating

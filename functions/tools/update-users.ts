@@ -1,5 +1,13 @@
 import * as commands from "../src/constants/command-list";
 import fetch from "node-fetch";
+import { applicationDefault, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+
+initializeApp({
+  credential: applicationDefault()
+});
+
+const db = getFirestore();
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -9,7 +17,6 @@ import fetch from "node-fetch";
 
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
-const guildId = process.env.ICRS_GUILD_ID;
 
 if (!token) {
   throw new Error("The DISCORD_TOKEN environment variable is required.");
@@ -24,10 +31,15 @@ if (!applicationId) {
  * Register all commands globally.  This can take o(minutes), so wait until
  * you're sure these are the commands you want.
  */
-async function registerGlobalCommands() {
-  const url = `https://discord.com/api/v10/applications/${applicationId}/guilds/${guildId}/commands`;
+async function updateAllUsernames() {
+  // get all usernames
 
-  await registerCommands(url);
+  const ids = await db.collection("users").get();
+  await Promise.all(
+    ids.docs.map((doc) =>
+      updateUsername(`https://discord.com/api/v10/users/${doc.id}`)
+    )
+  );
 }
 
 /**
@@ -35,29 +47,35 @@ async function registerGlobalCommands() {
  * commands before deploying them globally.
  * @param {string} url
  */
-async function registerCommands(url) {
+async function updateUsername(url) {
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
       Authorization: `Bot ${token}`
     },
-    method: "PUT",
-    body: JSON.stringify(
-      // in order to filter our "default"
-      Object.values(commands).filter((command) => command.name)
-    )
+    method: "GET"
   });
 
   if (response.ok) {
-    console.log("Registered all commands");
+    const userData = await response.json();
+    const userRef = db.collection("users").doc(userData.id);
+    await userRef.set(
+      {
+        profile: {
+          username: userData.username,
+          displayName: userData.global_name,
+          nickname: ""
+        }
+      },
+      {
+        merge: true
+      }
+    );
   } else {
-    console.error("Error registering commands");
-    const text = await response.text();
-    console.error(text);
+    throw new Error("Failed to fetch user data");
   }
-  return response;
 }
 
 // TODO Delete commands
 
-await registerGlobalCommands();
+await updateAllUsernames();

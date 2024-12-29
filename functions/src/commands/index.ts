@@ -58,6 +58,11 @@ export async function loadCommands() {
   return commandsMap;
 }
 
+/**
+ * Scheduled callback to update user data
+ * This function is called every 5 minutes
+ * @return {Promise<void>}
+ */
 export async function scheduledCallback() {
   const users = (await db.collection("users").get()).docs.map((doc) => ({
     id: doc.id,
@@ -71,17 +76,27 @@ export async function scheduledCallback() {
     return acc;
   }, []) as string[];
 
-  const leaderboard = await aoe4world.getSoloLeaderboard(allProfileIds.map(Number));
-  for (const user of users){
-    const profileData = {} as Awaited<ReturnType<typeof aoe4world.getSoloLeaderboard>>;
-    for (const profileId of Object.keys(user[GAMES.AOE4])){
+  const leaderboard = await aoe4world.getSoloLeaderboard(
+    allProfileIds.map(Number)
+  );
+  for (const user of users) {
+    const profileData = {} as Awaited<
+      ReturnType<typeof aoe4world.getSoloLeaderboard>
+    >;
+    for (const profileId of Object.keys(user[GAMES.AOE4])) {
       const profile = leaderboard[profileId];
       if (!profile) continue;
       profileData[profileId] = profile;
     }
-    await db.collection("users").doc(user.id).set({
-      [GAMES.AOE4]: profileData
-    }, { merge: true });
+    await db
+      .collection("users")
+      .doc(user.id)
+      .set(
+        {
+          [GAMES.AOE4]: profileData
+        },
+        { merge: true }
+      );
   }
 }
 

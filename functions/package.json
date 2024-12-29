@@ -5,11 +5,13 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "dev": "npm run build && firebase emulators:start --inspect-functions --only functions,firestore",
+    "dev:persist": "npm run build && firebase emulators:start --inspect-functions --only functions,firestore --import=./data --export-on-exit=./data",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "register": "npx tsx --env-file=.env tools/register-commands.ts",
+    "update-users": "npx tsx --env-file=.env tools/update-users.ts",
     "tunnel": "npx ngrok http 5001"
   },
   "engines": {

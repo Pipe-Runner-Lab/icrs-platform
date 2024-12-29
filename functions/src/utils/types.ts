@@ -13,7 +13,7 @@ export type PartialAPIApplicationCommand = Omit<
   "id" | "application_id" | "version" | "default_member_permissions" | "type"
 > & { type?: number };
 
-type PartialAPIApplicationCommandInteractionData = Omit<
+export type PartialAPIApplicationCommandInteractionData = Omit<
   APIChatInputApplicationCommandInteractionData,
   "options"
 > & {
