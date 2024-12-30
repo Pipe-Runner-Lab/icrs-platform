@@ -3,8 +3,9 @@ import {
   APIChatInputApplicationCommandInteractionData
 } from "@discordjs/core";
 import { getFirestore } from "firebase-admin/firestore";
-import Table from "cli-table";
 import { validateGame } from "../helpers/validator";
+import { GAME_NAMES } from "../../constants/games";
+import { generateInHouseLeaderboard } from "./utils";
 
 export const showInHouseLeaderboard = async (
   interactionData: APIChatInputApplicationCommandInteractionData
@@ -51,30 +52,13 @@ export const showInHouseLeaderboard = async (
     {} as Record<string, any>
   );
 
-  const table = new Table({
-    head: ["User", "Ranking", "Wins", "Total Games", "Win Rate"]
-  });
-  table.push(
-    ...(inHouseLeaderboard?.ranking ?? []).map((user: any, idx: number) => [
-      userMap[user.id].profile?.displayName,
-      idx + 1,
-      user.wins.toString(),
-      (user.wins + user.losses).toString(),
-      ((user.wins / (user.wins + user.losses)) * 100).toFixed(2) + "%"
-    ])
+  const table = generateInHouseLeaderboard(
+    inHouseLeaderboard?.ranking,
+    userMap
   );
 
-  // return {
-  //   embeds: [
-  //     {
-  //       title: "Leaderboard",
-  //       description: "```" + table.toString() + "```",
-  //       color: 0x00ffe0
-  //     }
-  //   ]
-  // };
-
   return {
-    content: "```" + table.toString() + "```"
+    content:
+      `**${GAME_NAMES[game]} In House Leaderboard**` + "```" + table + "```"
   };
 };
