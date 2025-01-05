@@ -4,7 +4,7 @@ import {
 } from "@discordjs/core";
 import { getFirestore } from "firebase-admin/firestore";
 import { validateGame } from "../helpers/validator";
-import { generateInHouseLeaderboard } from "./utils";
+import { generateAoe4InHouseLeaderboard } from "./utils";
 import { GAME_NAMES } from "../../constants/games";
 
 export const updateInHouseLeaderboard = async (
@@ -148,7 +148,7 @@ export const updateInHouseLeaderboard = async (
 
   const winnerIndex = ranking.findIndex((user: any) => user.id === winnerId);
   const loserIndex = ranking.findIndex((user: any) => user.id === loserId);
-  const updatedTable = generateInHouseLeaderboard(ranking, userMap, {
+  const updatedTable = generateAoe4InHouseLeaderboard(ranking, userMap, {
     winnerIndex,
     loserIndex,
     didHoldGround
@@ -159,11 +159,13 @@ export const updateInHouseLeaderboard = async (
     ? `<@!${winnerId}> hold's his ground at rank ${winnerIndex + 1} while <@!${loserId}> returns home to rank ${loserIndex + 1}`
     : `<@!${winnerId}> moved up to rank ${winnerIndex + 1} knocking <@!${loserId}> down to rank ${loserIndex + 1}`;
 
+  console.log(game);
+
   return {
     content:
       `Congratulations 🎉 <@!${winnerId}> on winning the game! We hope <@!${loserId}> will fight back next time ⚔️! GG\n` +
       `${winningText}\n\n` +
-      +`**${GAME_NAMES[game]} In House Leaderboard** (Updated)` +
+      `**${GAME_NAMES[game]} In House Leaderboard** (Updated)` +
       "```" +
       updatedTable +
       "```"

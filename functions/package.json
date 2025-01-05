@@ -7,6 +7,7 @@
     "dev": "npm run build && firebase emulators:start --inspect-functions --only functions,firestore",
     "dev:persist": "npm run build && firebase emulators:start --inspect-functions --only functions,firestore --import=./data --export-on-exit=./data",
     "shell": "npm run build && firebase functions:shell",
+    "shell:local": "firebase emulators:start --only firestore --import=./data --export-on-exit=./data",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
@@ -24,7 +25,8 @@
     "cli-table": "^0.3.11",
     "discord-interactions": "^4.1.0",
     "firebase-admin": "^13.0.2",
-    "firebase-functions": "^6.2.0"
+    "firebase-functions": "^6.2.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

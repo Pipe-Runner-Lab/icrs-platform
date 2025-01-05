@@ -7,12 +7,12 @@ import fetch from "node-fetch";
  * to be run once.
  */
 
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.DISCORD_BOT_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
 const guildId = process.env.ICRS_GUILD_ID;
 
 if (!token) {
-  throw new Error("The DISCORD_TOKEN environment variable is required.");
+  throw new Error("The DISCORD_BOT_TOKEN environment variable is required.");
 }
 if (!applicationId) {
   throw new Error(

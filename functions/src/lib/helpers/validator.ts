@@ -12,7 +12,7 @@ export const validateCredentials = (
 ) => {
   if (
     // TODO: Node env still not working
-    process.env.NODE_ENV === "production" &&
+    process.env.NODE_ENV !== "development" &&
     interaction.channel.id !== process.env.LEADERBOARD_CHANNEL_ID
   ) {
     throw new Error(

@@ -5,7 +5,7 @@ import {
 import { getFirestore } from "firebase-admin/firestore";
 import { validateGame } from "../helpers/validator";
 import { GAME_NAMES } from "../../constants/games";
-import { generateInHouseLeaderboard } from "./utils";
+import { generateAoe4InHouseLeaderboard } from "./utils";
 
 export const showInHouseLeaderboard = async (
   interactionData: APIChatInputApplicationCommandInteractionData
@@ -52,7 +52,7 @@ export const showInHouseLeaderboard = async (
     {} as Record<string, any>
   );
 
-  const table = generateInHouseLeaderboard(
+  const table = generateAoe4InHouseLeaderboard(
     inHouseLeaderboard?.ranking,
     userMap
   );

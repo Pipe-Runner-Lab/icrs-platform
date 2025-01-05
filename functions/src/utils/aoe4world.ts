@@ -41,15 +41,23 @@ export async function getProfileId(username: string): Promise<number | void> {
   return data.players[0].profile_id;
 }
 
-export async function getSoloLeaderboard(profileIds: number[]): Promise<Record<string, {
-  rating: number;
-  name: string;
-}>> {
-  const result = {} as Record<string, {
-    rating: number;
-    name: string;
-  }>;
-  
+export async function getSoloLeaderboard(profileIds: number[]): Promise<
+  Record<
+    string,
+    {
+      rating: number;
+      name: string;
+    }
+  >
+> {
+  const result = {} as Record<
+    string,
+    {
+      rating: number;
+      name: string;
+    }
+  >;
+
   const chunks = [];
   for (let i = 0; i < profileIds.length; i += 50) {
     chunks.push(profileIds.slice(i, i + 50));
@@ -69,4 +77,26 @@ export async function getSoloLeaderboard(profileIds: number[]): Promise<Record<s
   }
 
   return result;
+}
+
+export async function getAllElo(id: string): Promise<
+  Record<
+    string,
+    {
+      rmSoloElo: number;
+      rmSoloTitle: string;
+      rmTeamElo: number;
+      rmTeamTitle: string;
+      name: string;
+    }
+  >
+> {
+  const res = await apiCall(`players/${id}`);
+  return {
+    rmSoloElo: res.modes?.rm_solo?.rating,
+    rmSoloTitle: res.modes?.rm_solo?.rank_level,
+    rmTeamElo: res.modes?.rm_team?.rating,
+    rmTeamTitle: res.modes?.rm_team?.rank_level,
+    name: res.name
+  };
 }

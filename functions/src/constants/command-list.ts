@@ -110,16 +110,6 @@ export const LEADERBOARD = {
     },
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: "update-online",
-      description: "Update Online leaderboard",
-      options: [
-        gameChoiceCommandComponent,
-        mentionCommandComponent("winner"),
-        mentionCommandComponent("loser")
-      ]
-    },
-    {
-      type: ApplicationCommandOptionType.Subcommand,
       name: "update-in-house",
       description: "Update In House leaderboard",
       options: [
