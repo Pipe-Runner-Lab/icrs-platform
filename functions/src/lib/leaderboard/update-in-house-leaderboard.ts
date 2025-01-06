@@ -159,8 +159,6 @@ export const updateInHouseLeaderboard = async (
     ? `<@!${winnerId}> hold's his ground at rank ${winnerIndex + 1} while <@!${loserId}> returns home to rank ${loserIndex + 1}`
     : `<@!${winnerId}> moved up to rank ${winnerIndex + 1} knocking <@!${loserId}> down to rank ${loserIndex + 1}`;
 
-  console.log(game);
-
   return {
     content:
       `Congratulations 🎉 <@!${winnerId}> on winning the game! We hope <@!${loserId}> will fight back next time ⚔️! GG\n` +

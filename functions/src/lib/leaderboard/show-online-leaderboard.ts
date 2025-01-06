@@ -41,8 +41,6 @@ export const showOnlineLeaderboard = async (
       ...doc.data()
     })) as WithId<User>[];
 
-    console.log(users);
-
     const onlineRanking = orderBy(
       users.flatMap((user) =>
         Object.values(user.aoe_4).map(({ name, ...rest }) => ({

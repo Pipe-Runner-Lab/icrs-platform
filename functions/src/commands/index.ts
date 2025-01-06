@@ -25,20 +25,22 @@ loadCommands().then((commands) => {
 export async function handleCommand(request: Request, response: Response) {
   try {
     const command = commandsMap[request.body.data.name];
+    await api.interactions.defer(request.body.id, request.body.token);
     const responseData = await command.callback({
       interaction: request.body,
       api: api
     });
     if (!responseData) {
-      return;
+      throw new Error("Something went wrong");
     }
-    response.json({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: responseData
-    });
+    await api.interactions.followUp(
+      request.body.application_id,
+      request.body.token,
+      responseData
+    );
   } catch (error) {
     logger.error(error);
-    logger.info(JSON.stringify(request.body));
+    logger.info(request.body);
     response.json({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
