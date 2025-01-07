@@ -8,6 +8,7 @@ import { GAME_NAMES, GAMES } from "../../constants/games";
 import { generateAoe4OnlineLeaderboard } from "./utils";
 import { User, WithId } from "../../@types/firebase-data";
 import { orderBy } from "lodash";
+import { truncate } from "../../utils/common";
 
 export const showOnlineLeaderboard = async (
   interactionData: APIChatInputApplicationCommandInteractionData
@@ -42,18 +43,24 @@ export const showOnlineLeaderboard = async (
     })) as WithId<User>[];
 
     const onlineRanking = orderBy(
-      users.flatMap((user) =>
-        Object.values(user.aoe_4).map(({ name, ...rest }) => ({
-          ign: name,
-          name: user.profile.displayName,
-          ...rest
-        }))
-      ),
+      users
+        .flatMap((user) =>
+          Object.values(user.aoe_4).map(({ name, ...rest }) => ({
+            ign: name,
+            name: user.profile.displayName,
+            ...rest
+          }))
+        )
+        .map((user) => ({
+          ...user,
+          rmSoloElo: user.rmSoloElo ?? 0,
+          rmTeamElo: user.rmTeamElo ?? 0
+        })),
       "rmSoloElo",
       "desc"
     );
 
-    const table = generateAoe4OnlineLeaderboard(onlineRanking);
+    const table = truncate(generateAoe4OnlineLeaderboard(onlineRanking));
 
     return {
       content:

@@ -16,7 +16,7 @@ export const validateCredentials = (
     interaction.channel.id !== process.env.LEADERBOARD_CHANNEL_ID
   ) {
     throw new Error(
-      "This command is only available in the leaderboard channel"
+      `This command is only available in the <#${process.env.LEADERBOARD_CHANNEL_ID}> channel`
     );
   }
 

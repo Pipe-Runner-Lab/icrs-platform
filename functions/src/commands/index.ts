@@ -1,8 +1,6 @@
 import { REST } from "@discordjs/rest";
-import { API } from "@discordjs/core";
+import { API, MessageFlags } from "@discordjs/core";
 import type { Request } from "firebase-functions/v2/https";
-import type { Response } from "firebase-functions/lib/v1/cloud-functions";
-import { InteractionResponseType } from "discord-interactions";
 import type { AppCommand } from "@/@types/discord-custom";
 import { readdir } from "fs/promises";
 import { logger } from "firebase-functions/v2";
@@ -22,10 +20,10 @@ loadCommands().then((commands) => {
  * @param {Request} request The request object
  * @param {Response} response The response object
  */
-export async function handleCommand(request: Request, response: Response) {
+export async function handleCommand(request: Request) {
+  const command = commandsMap[request.body.data.name];
+  await api.interactions.defer(request.body.id, request.body.token);
   try {
-    const command = commandsMap[request.body.data.name];
-    await api.interactions.defer(request.body.id, request.body.token);
     const responseData = await command.callback({
       interaction: request.body,
       api: api
@@ -40,17 +38,21 @@ export async function handleCommand(request: Request, response: Response) {
     );
   } catch (error) {
     logger.error(error);
-    logger.info(request.body);
-    response.json({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: (
-          error as {
-            message: string;
-          }
-        ).message
+    logger.info(JSON.stringify(request.body));
+    await api.interactions.followUp(
+      request.body.application_id,
+      request.body.token,
+      {
+        content:
+          (
+            error as {
+              message: string;
+            }
+          ).message +
+          `\n\nIf you think this is a bug, please take a screenshot and report this in the <#${process.env.DEVELOPERS_CHANNEL_ID}> channel`,
+        flags: MessageFlags.Ephemeral
       }
-    });
+    );
   }
 }
 

@@ -27,7 +27,7 @@ export const interactions = onRequest(
       return;
     }
     if (request.body.type == InteractionType.APPLICATION_COMMAND) {
-      handleCommand(request, response);
+      handleCommand(request);
     }
   }
 );
