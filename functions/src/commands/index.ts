@@ -49,8 +49,7 @@ export async function handleCommand(request: Request) {
               message: string;
             }
           ).message +
-          `\n\nIf you think this is a bug, please take a screenshot and report this in the <#${process.env.DEVELOPERS_CHANNEL_ID}> channel`,
-        flags: MessageFlags.Ephemeral
+          `\n\nIf you think this is a bug, please take a screenshot and report this in the <#${process.env.DEVELOPERS_CHANNEL_ID}> channel`
       }
     );
   }

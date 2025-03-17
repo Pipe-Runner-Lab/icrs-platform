@@ -1,0 +1,27 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import PageFooter from "../components/PageFooter.astro";
+
+import BannerCard from "../components/BannerEvents.astro";
+import { events, morePlaylists } from "../lib/data";
+
+import HomePagePosts from "../components/Blog/HomePagePosts.astro";
+import EventsTable from "../components/EventsTable.astro";
+import Ticker from "../components/Ticker.astro";
+
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Home">
+  <div
+    id="playlist-container"
+    class="relative transition-all duration-1000 bg-context"
+    style="min-height:300px;--context-color:#000000;"
+  >
+    <PageHeader />
+
+    <EventsTable />
+
+    <PageFooter />
+  </div>
+</Layout>
