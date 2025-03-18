@@ -1,0 +1,20 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import PageFooter from "../components/PageFooter.astro";
+
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Home">
+  <div
+    id="playlist-container"
+    class="relative transition-all duration-1000 bg-context"
+    style="min-height:300px;--context-color:#000000;"
+  >
+    <PageHeader />
+
+    <div>Donations</div>
+
+    <PageFooter />
+  </div>
+</Layout>

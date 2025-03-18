@@ -1,19 +1,24 @@
 <div
-  class="relative z-10 py-6 px-6 flex justify-between"
+  class="relative z-10 px-6 flex justify-between h-[72px] items-center"
   transition:name="page header"
   transition:persist
 >
-  <a
-    href="/"
-    aria-label="go back to home page"
-    class="text-2xl font-bold text-white"
-  >
-    ICRS
-  </a>
+  <div class="flex space-x-2 items-center h-full py-4">
+    <img src="/images/icrs_logo.png" alt="ICRS Logo" class="h-full" />
+    <a
+      href="/"
+      aria-label="go back to home page"
+      class="text-2xl font-bold text-white"
+    >
+      ICRS
+    </a>
+  </div>
   <nav>
     <ul class="flex space-x-8 mt-1">
       <li><a href="/" class="hover:text-customYellow">Home</a></li>
       <li><a href="/events" class="hover:text-customYellow">Events</a></li>
+      <li><a href="/donate" class="hover:text-customYellow">Donate</a></li>
+      <li><a href="/join" class="hover:text-customYellow">Join Us</a></li>
     </ul>
   </nav>
 </div>

@@ -3,13 +3,8 @@ import PageHeader from "../components/PageHeader.astro";
 import PageFooter from "../components/PageFooter.astro";
 import EventSlider from "../components/EventSlider.astro";
 
-import HomePagePosts from "../components/Blog/HomePagePosts.astro";
-
 import BannerEvents from "../components/BannerEvents.astro";
-import { events, morePlaylists } from "../lib/data";
-
-import EventsTable from "../components/EventsTable.astro";
-import EventCategories from "../components/EventCategories.astro";
+import { events } from "../lib/data";
 import Ticker from "../components/Ticker.astro";
 
 import Layout from "../layouts/Layout.astro";
@@ -26,7 +21,7 @@ import Layout from "../layouts/Layout.astro";
     <section class="text-center py-24 bg-black relative">
       <div class="absolute inset-0 w-full z-10 bg-black opacity-50"></div>
       <img
-        src="/banner.jpg"
+        src="/images/home_background.jpg"
         alt="Background Image"
         class="absolute inset-0 w-full h-full object-cover opacity-40"
       />
@@ -34,7 +29,7 @@ import Layout from "../layouts/Layout.astro";
         <h1
           class="text-5xl md:text-6xl lg:text-7xl font-bold text-customYellow"
         >
-          A COMMUNITY OF RTS ENTHUSIASTS
+          INTERNATIONAL CIVIL RTS SERVER
         </h1>
         <p
           class="mt-4 text-sm md:text-base lg:text-lg text-gray-300 max-w-3xl mx-auto"
@@ -44,26 +39,10 @@ import Layout from "../layouts/Layout.astro";
           community to bring together like-minded individuals who share a
           passion for real-time strategy games.
         </p>
-        <div class="mt-8 flex justify-center space-x-4">
-          <a
-            href="#"
-            class="bg-customYellow text-black py-2 px-6 hover:bg-customYellowHover"
-            >EVENTS CALENDAR</a
-          >
-          <a href="#" class="bg-gray-800 text-white py-2 px-6 hover:bg-gray-700"
-            >TICKETS</a
-          >
-        </div>
       </div>
-      <!-- Thumbnails -->
-      <div class="px-6 relative z-10 mt-12 max-w-7xl mx-auto">
-        <div class="flex flex-wrap mt-6 gap-4">
-          {
-            morePlaylists.map((playlist) => (
-              <BannerEvents playlist={playlist} />
-            ))
-          }
-        </div>
+      <!-- Latest Event -->
+      <div class="w-fit mx-auto">
+        {events?.[0] && <BannerEvents playlist={events[0]} />}
       </div>
     </section>
 
