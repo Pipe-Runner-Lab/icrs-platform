@@ -4,15 +4,11 @@ interface Props {
   image?: string;
 }
 
-const {
-  title = "Home",
-  image = "",
-} = Astro.props;
+const { title = "Home", image = "" } = Astro.props;
 
 import { ViewTransitions } from "astro:transitions";
 import "./layout.css";
 import PageFooter from "../components/PageFooter.astro";
-
 ---
 
 <!doctype html>
@@ -31,11 +27,16 @@ import PageFooter from "../components/PageFooter.astro";
     <meta name="twitter:image" content={image} />
     <ViewTransitions fallback="none" />
     <!-- Other head elements -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body class="dark">
     <div class="relative h-screen gap-2 flex items-stretch">
-      <div class=" bg-zinc-900 flex-1 mx-auto overflow-y-auto">
+      <div class="bg-zinc-900 flex-1 mx-auto overflow-y-auto">
         <slot />
       </div>
     </div>
@@ -92,14 +93,13 @@ import PageFooter from "../components/PageFooter.astro";
     </script>
     <script>
       if (!document.startViewTransition) {
-        document.getElementById("not-support").classList.remove("hidden");
+        document.getElementById("not-support")!.classList.remove("hidden");
       }
       document.addEventListener("astro:page-load", () => {
         for (const el of document.querySelectorAll(".el-to-fade")) {
           el.classList.remove("scale-90");
         }
       });
-      
     </script>
   </body>
 </html>

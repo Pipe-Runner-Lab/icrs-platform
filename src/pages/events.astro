@@ -2,12 +2,7 @@
 import PageHeader from "../components/PageHeader.astro";
 import PageFooter from "../components/PageFooter.astro";
 
-import BannerCard from "../components/BannerEvents.astro";
-import { events, morePlaylists } from "../lib/data";
-
-import HomePagePosts from "../components/Blog/HomePagePosts.astro";
 import EventsTable from "../components/EventsTable.astro";
-import Ticker from "../components/Ticker.astro";
 
 import Layout from "../layouts/Layout.astro";
 ---
@@ -20,7 +15,9 @@ import Layout from "../layouts/Layout.astro";
   >
     <PageHeader />
 
-    <EventsTable />
+    <div class="min-h-[calc(100vh-72px)]">
+      <EventsTable />
+    </div>
 
     <PageFooter />
   </div>
