@@ -21,7 +21,13 @@ import "./layout.css";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title ? `${title} | ` : ""}Internation Civil RTS Server</title>
+    <title>
+      {
+        title
+          ? `${title} | Internation Civil RTS Server`
+          : "Internation Civil RTS Server"
+      }
+    </title>
     <meta property="og:image" content={image} />
     <meta name="twitter:image" content={image} />
     <ViewTransitions fallback="none" />
