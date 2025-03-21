@@ -18,7 +18,7 @@ import Layout from "../layouts/Layout.astro";
   >
     <PageHeader />
 
-    <section class="text-center py-24 bg-black relative">
+    <section id="about" class="text-center py-24 bg-black relative">
       <div class="absolute inset-0 w-full z-10 bg-black opacity-50"></div>
       <img
         src="/images/home_background.jpg"
@@ -41,17 +41,17 @@ import Layout from "../layouts/Layout.astro";
         </p>
       </div>
       <!-- Latest Event -->
-      <div class="w-fit mx-auto">
-        {events?.[0] && <BannerEvents playlist={events[0]} />}
+      <div class="w-1/3 w-min-96 mx-auto relative z-[12]">
+        {events?.[0] && <BannerEvents event={events[0]} />}
       </div>
     </section>
 
     <Ticker />
 
-    <p class="mt-4 max-w-2xl mx-auto bg-black px-6 py-12 text-left">
-      Experience the thrill of live music, celebrate diverse cultures, and
-      immerse yourself in captivating art. Get ready to embark on an
-      extraordinary journey of entertainment.
+    <p class="mt-4 max-w-2xl mx-auto bg-black px-6 py-12 text-center">
+      Interested in participating in our events? Keep an eye on the event
+      calendar to start gearing up for the next big event. Join our Discord
+      server to stay updated with the latest news and announcements.
     </p>
 
     <!-- Event slider -->
@@ -69,22 +69,55 @@ import Layout from "../layouts/Layout.astro";
 
     <section class="relative p-4 text-white text-center py-14">
       <div class="relative z-10 p-20 bg-customGray rounded">
-        <h2 class="text-5xl font-bold">GET YOUR TICKET TODAY</h2>
+        <h2 class="text-5xl font-bold">Ready Your Hotkeys</h2>
         <p class="mt-4 max-w-2xl mx-auto">
-          Experience the thrill, excitement, and magic of upcoming events. Don’t
-          miss your chance to be part of the action – get your ticket today.
+          If RTS excites you and you are looking for a community to share your
+          passion, then you are at the right place. Join us and be a part of
+          something great.
         </p>
         <button
-          class="mt-12 px-8 py-4 bg-customYellow text-black hover:bg-customYellowHover"
-          >BUY TICKET NOW</button
+          onclick="window.location.href='/join'"
+          class="mt-12 px-8 py-4 bg-customYellow text-black hover:bg-customYellowHover rounded-md"
+          >JOIN US</button
         >
         <img
-          src="/singer.png"
+          src="/images/man-at-arm.png"
           alt="Background"
-          class="absolute bottom-0 right-9 w-1/4 h-auto object-cover z-0"
+          class="absolute bottom-0 right-9 w-1/5 h-auto object-cover z-0"
+        />
+        <img
+          src="/images/kez.png"
+          alt="Background"
+          class="absolute bottom-0 left-9 w-1/3 h-auto object-cover z-0"
         />
       </div>
     </section>
+
+    <div class="p-6">
+      <h1 class="text-3xl mx-auto w-fit">Community Videos & Streams</h1>
+      <div class="flex space-x-4 mt-6">
+        <div class="flex-1 aspect-video">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube-nocookie.com/embed/videoseries?si=OmkMA3BKk3keQeCs&list=PLVdptH10z3B83Kp6mBRWEtTFwe7NZPQ0B"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <div class="flex-1 aspect-video">
+          <iframe
+            src="https://clips.twitch.tv/embed?clip=FairCloudyRabbitAMPEnergy-8-RRRAY2P-sBWhwq&parent=localhost&parent=icrs-platform.web.app"
+            frameborder="0"
+            allowfullscreen="true"
+            scrolling="no"
+            height="100%"
+            width="100%"></iframe>
+        </div>
+      </div>
+    </div>
 
     <PageFooter />
   </div>

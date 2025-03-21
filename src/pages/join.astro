@@ -13,7 +13,27 @@ import Layout from "../layouts/Layout.astro";
   >
     <PageHeader />
 
-    <div>Hello</div>
+    <div
+      class="min-h-[calc(100vh-72px)] flex justify-center items-center"
+      style="background-image: url(/images/join-us-bg.png); background-size: cover; background-position: center;"
+    >
+      <div class="flex flex-col items-center justify-start">
+        <h1 class="text-3xl font-bold">
+          Discussions, Entertainment and a Lot of RTS
+        </h1>
+        <h2 class="mt-3">Come find us on Discord and play with us!</h2>
+        <div class="w-[500px] h-[500px] mt-4">
+          <iframe
+            src="https://discord.com/widget?id=1296252947763826698&theme=dark"
+            width="100%"
+            height="100%"
+            allowtransparency="true"
+            frameborder="0"
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+          ></iframe>
+        </div>
+      </div>
+    </div>
 
     <PageFooter />
   </div>

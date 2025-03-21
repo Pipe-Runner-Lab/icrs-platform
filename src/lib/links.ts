@@ -1,3 +1,3 @@
-export const DiscordLink = "https://discord.gg/invite";
-export const YoutubeLink = "https://instagram.com/invite";
-export const TwitchLink = "https://twitter.com/invite";
+export const DiscordLink = "https://discord.gg/2gweFtPr4G";
+export const YoutubeLink = "https://www.youtube.com/@pipe_runner_arcade";
+export const TwitchLink = "https://www.twitch.tv/piperunnerarcade";

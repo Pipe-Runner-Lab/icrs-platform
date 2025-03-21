@@ -1,31 +1,31 @@
 ---
 import type { Event } from "../lib/data";
 import SeeButton from "./SeeButton.astro";
-import BannerEventFooter from "./BannerEventFooter.astro";
 interface Props {
-  playlist: Event;
+  event: Event;
 }
 
-const { playlist } = Astro.props;
+const { event: event } = Astro.props;
 ---
 
 <a
-  href={`/event/${playlist.id}`}
-  class="playlist-card p-4 flex-col items-center group relative transition-all duration-300 overflow-hidden gap-5 rounded-md shadow-lg hover:shadow-xl outline-none bg-zinc-500/5 hover:bg-zinc-500/20 focus:bg-zinc-500/20"
-  data-color={playlist.color.dark}
-  transition:name=`playlist ${playlist.id} box`
+  href={`/events/${event.id}`}
+  class="playlist-card p-4 flex-col items-center group relative transition-all duration-300 overflow-hidden gap-5 rounded-md shadow-lg"
+  data-color={event.color.dark}
+  transition:name=`playlist ${event.id} box`
 >
-  <div class="w-40">
-    <div class="relative group mx-auto h-40 w-full flex-none shadow-lg">
+  <div class="text-2xl font-bold mb-2">Upcoming Event</div>
+  <div class="">
+    <div class="relative group mx-auto aspect-video w-full flex-none shadow-lg">
       <img
-        src={playlist.cover}
-        alt={playlist.title}
+        src={event.cover}
+        alt={event.title}
         class="object-cover h-full w-full rounded-md shadow-[5px_0_30px_0px_rgba(0,0,0,0.3)]"
-        transition:name=`playlist ${playlist.id} image`
+        transition:name=`playlist ${event.id} image`
       />
       <div
         class="absolute right-2 bottom-2 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all"
-        transition:name=`playlist ${playlist.id} play`
+        transition:name=`playlist ${event.id} play`
       >
         <SeeButton />
       </div>
@@ -33,9 +33,9 @@ const { playlist } = Astro.props;
     <div class="pt-2">
       <div
         class="font-bold block truncate"
-        transition:name=`playlist ${playlist.id} title`
+        transition:name=`playlist ${event.id} title`
       >
-        {playlist.title}
+        {event.title}
       </div>
     </div>
   </div>

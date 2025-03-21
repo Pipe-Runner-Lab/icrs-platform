@@ -1,3 +1,7 @@
+---
+import { DiscordLink, TwitchLink, YoutubeLink } from "../lib/links";
+---
+
 <div
   class="relative z-10 py-4 bg-slate-900"
   transition:name="page footer"
@@ -11,12 +15,13 @@
         <div class="mb-6 md:mb-0">
           <h2 class="text-3xl font-bold">ICRS</h2>
           <div class="flex space-x-4 mt-4">
-            <a href="#" class="text-yellow-500"
+            <a href={YoutubeLink} class="text-yellow-500"
               ><i class="fab fa-youtube"></i></a
             >
-            <a href="#" class="text-yellow-500"><i class="fab fa-twitch"></i></a
+            <a href={TwitchLink} class="text-yellow-500"
+              ><i class="fab fa-twitch"></i></a
             >
-            <a href="#" class="text-yellow-500"
+            <a href={DiscordLink} class="text-yellow-500"
               ><i class="fab fa-discord"></i></a
             >
           </div>
@@ -25,7 +30,7 @@
           <div>
             <h3 class="font-bold mb-2">Community</h3>
             <ul>
-              <li><a href="#" class="hover:underline">About us</a></li>
+              <li><a href="/#about" class="hover:underline">About us</a></li>
               <li><a href="#" class="hover:underline">Contact</a></li>
               <li><a href="#" class="hover:underline">Gallery</a></li>
             </ul>

@@ -16,7 +16,7 @@ import { events } from "../lib/data";
           <h3 class="text-xl font-semibold mb-2" transition:name={`playlist ${event.id} title`}>{event.title}</h3>
           <p class="text-sm text-gray-400 mb-4">{event.description}</p>
           <div class="text-sm text-gray-500 mb-4">{event.date}</div>
-          <div class="text-sm text-gray-500 mb-4">{event.artists}</div>
+          {event.prizePool && <div class="text-sm text-gray-500 mb-4">${event.prizePool}</div>}
           <a href={`/events/${event.id}`} class="bg-customYellow text-gray-900 font-bold py-2 px-4 rounded hover:bg-customYellowHover"
           transition:name={`playlist ${event.id} box`}>
             PARTICIPATE &rarr;
