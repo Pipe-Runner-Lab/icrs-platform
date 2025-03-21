@@ -1,11 +1,11 @@
 {
-  "name": "astrojs-event-template",
-  "description": "Event Website Template with Astro View Transitions.",
+  "name": "icrs-website",
+  "description": "An ever-inclusive international haven for RTS players from all age groups and backgrounds, free from toxicity",
   "type": "module",
-  "version": "0.0.1",
-  "author": "https://github.com/99points",
+  "version": "1.0.0",
+  "author": "https://github.com/Pipe-Runner",
   "scripts": {
-    "dev": "astro dev", 
+    "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
