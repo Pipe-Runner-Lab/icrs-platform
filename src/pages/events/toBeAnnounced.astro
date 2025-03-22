@@ -1,0 +1,32 @@
+---
+import PageHeader from "../../components/PageHeader.astro";
+import PageFooter from "../../components/PageFooter.astro";
+
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout>
+  <div
+    id="playlist-container"
+    class="relative transition-all duration-1000 bg-context"
+    style="min-height:300px;--context-color:#000000;"
+  >
+    <PageHeader />
+
+    <div
+      class="min-h-[calc(100vh-72px)] flex flex-col justify-center items-center"
+      style="background-image: url(/images/temp_bg.png); background-size: cover; background-position: center;"
+    >
+      <div
+        class="flex-1 flex items-center justify-center w-full h-full backdrop-filter backdrop-blur-lg bg-black bg-opacity-50"
+      >
+        <div class="text-center text-white p-4 text-5xl max-w-[40vw]">
+          We are currently finalizing a few details for this event. The
+          registration link will be available soon. Please check back soon for
+          more information. Thank you for your patience.
+        </div>
+      </div>
+    </div>
+    <PageFooter />
+  </div>
+</Layout>

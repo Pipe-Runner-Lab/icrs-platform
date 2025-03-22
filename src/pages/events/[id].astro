@@ -7,6 +7,7 @@ import PageHeader from "../../components/PageHeader.astro";
 import Layout from "../../layouts/Layout.astro";
 import { events } from "../../lib/data";
 import PageFooter from "../../components/PageFooter.astro";
+import { DiscordLink } from "../../lib/links";
 
 export function getStaticPaths() {
   return events.map((event) => ({
@@ -51,9 +52,14 @@ const event = events.find((event) => event.id === id);
             </h1>
           </div>
           <div class="flex">
-            <div class="text-sm">
+            <div class="text-md">
               <div class="mt-1">
                 <span class="font-semibold"> {event?.date}</span>
+                {
+                  event?.isDateTentative && (
+                    <span class="text-gray-400"> (Tentative)</span>
+                  )
+                }
               </div>
             </div>
           </div>
@@ -149,15 +155,10 @@ const event = events.find((event) => event.id === id);
             <div>
               <h3 class="text-2xl font-semibold mb-2">Contact:</h3>
               <p class="text-gray-400">
-                For more information, visit our website or contact us at <a
-                  href="mailto:info@example.com"
-                  class="text-blue-500">info@example.com</a
+                For more information, visit our <a
+                  class="text-blue-400 underline"
+                  href="/join">discord server</a
                 >.
-              </p>
-              <p class="text-gray-400">
-                Join us at Vibe Wave for an evening of unforgettable music,
-                vibrant energy, and lasting memories. Get your tickets now and
-                be part of an extraordinary musical journey!
               </p>
             </div>
           </div>
