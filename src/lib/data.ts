@@ -42,11 +42,14 @@ export const events: Event[] = [
     isDateTentative: true,
     registrationLink: "/events/toBeAnnounced",
     game: "Age of Empires",
-    eventHighlights: ["FFA Format with some really fun point system", "Top 3 players receive a prize from a pool of $100", "To promote new players, there will be an ELO cap for the participants. The details will be available in the registration form"],
+    eventHighlights: [
+      "FFA Format with some really fun point system.", 
+      "Top 3 players receive a prize from a pool of $100.",
+      "To promote new players, there will be an ELO cap for the participants. The details will be available in the registration form."],
     additionalInfo: [
-      "The event will be streamed and casted on our Twitch channel and Youtube channel",
-      "The event will be hosted on our Discord server",
-      "Rulebook will be available on the registration page",
+      "The event will be streamed and cast on our Twitch channel and Youtube channel.",
+      "The event will be hosted on our Discord server.",
+      "Rulebook will be available on the registration page.",
     ],
     sponsors: [
       {
@@ -54,10 +57,15 @@ export const events: Event[] = [
         logo: "https://lh3.googleusercontent.com/a-/ALV-UjXlTsMdTpRcWiqvGClQT6xQ3lO6uh4KwjKozXIksFE05XJH2xM=w60-h60-p-rp-mo-br100",
       },
     ],
-    patrons: [{ name: "Pipe Runner", amount: 50 }, {
-      name: "Magma",
-      amount: 50,
-    }],
+    patrons: [
+      { 
+        name: "Pipe Runner",
+        amount: 50 }, 
+      {
+        name: "Magma",
+        amount: 50,
+      }
+    ],
     prizePool: 100,
   },
 ];
