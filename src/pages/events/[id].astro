@@ -99,25 +99,17 @@ const event = events.find((event) => event.id === id);
               )
             }
 
-            <div>
+            {event?.additionalInfo && (<div>
               <h3 class="text-2xl font-semibold mb-2">
                 Additional Information:
               </h3>
               <ul class="list-disc list-inside text-gray-400">
-                <li>
-                  <span class="font-bold">Parking:</span> Available on-site with
-                  easy access to the venue.
-                </li>
-                <li>
-                  <span class="font-bold">Accessibility:</span> The event is accessible
-                  to all, with special arrangements for individuals with disabilities.
-                </li>
-                <li>
-                  <span class="font-bold">Security:</span> Enhanced security measures
-                  will be in place to ensure the safety and well-being of all attendees.
-                </li>
+                {event.additionalInfo.map((info) => (
+                      <li>{info}</li>
+                    ))}
               </ul>
-            </div>
+            </div>)
+            }
 
             {
               event?.patrons && (
