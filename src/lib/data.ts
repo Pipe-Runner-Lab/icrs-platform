@@ -32,7 +32,7 @@ export interface Event {
 export const events: Event[] = [
   {
     id: "1",
-    title: "FFA Tournament #1 // ICRS - Age of Empires 4",
+    title: "8 Angry Men #1 // AOE 4 - FFA Tournament",
     color: colors.teal,
     cover:
       "https://media.wired.com/photos/6172e44f8acfc2aaa8454fbe/master/w_2240,c_limit/Age%20of%20Empires%20IV_3_4K.jpg",

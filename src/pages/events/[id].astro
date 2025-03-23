@@ -45,7 +45,9 @@ const event = events.find((event) => event.id === id);
           >
           </div>
         </div>
-        <div class="absolute inset-0 flex flex-col space-y-3 justify-end pl-12">
+        <div
+          class="absolute inset-0 flex flex-col space-y-3 justify-end md:px-12 px-4"
+        >
           <div>
             <h1 class="title-clamp font-bold block">
               {event?.title}
@@ -74,7 +76,7 @@ const event = events.find((event) => event.id === id);
         </div>
       </div>
 
-      <div class="bg-zinc-900/30 mt-6 flex-1 p-6 blur-100">
+      <div class="bg-zinc-900/30 mt-6 flex-1 p-0 pb-4 md:p-6 blur-100">
         <div class="px-6 pt-4">
           <div class="space-y-6">
             <div>
