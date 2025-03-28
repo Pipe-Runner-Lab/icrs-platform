@@ -40,7 +40,7 @@ export const events: Event[] = [
       "Join us for the first Free For All tournament of ICRS. Whether you are a beginner or a pro, this is your chance to showcase your art of base building and military tactics. This is an international tournament and is open to all players of all nationalities and backgrounds.",
     date: new Date("2025-04-06"),
     isDateTentative: true,
-    registrationLink: "/events/toBeAnnounced",
+    registrationLink: "https://www.start.gg/tournament/icrs-8-angry-men-1",
     game: "Age of Empires",
     eventHighlights: [
       "FFA Format with some really fun point system.", 
