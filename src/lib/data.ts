@@ -56,6 +56,10 @@ export const events: Event[] = [
         name: "Game Syndrome",
         logo: "https://lh3.googleusercontent.com/a-/ALV-UjXlTsMdTpRcWiqvGClQT6xQ3lO6uh4KwjKozXIksFE05XJH2xM=w60-h60-p-rp-mo-br100",
       },
+      {
+        name: "Scentsera",
+        logo: "/images/ScentsEra_Logo_110x.png"
+      }
     ],
     patrons: [
       { 
